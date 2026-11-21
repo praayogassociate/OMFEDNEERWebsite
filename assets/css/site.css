@@ -515,3 +515,5 @@ img{height:auto}
   .product .pimg picture:has(img.cut){height:300px}.product .pimg img.cut{max-height:300px}
 }
 @media (max-width:767px){.slide .pic-trio{height:52%;top:10px}.slide.light .txt{bottom:56px}.slide.light h2{font-size:22px}}
+.banner-grid>*{min-width:0}
+.slider{width:100%;align-self:start}
