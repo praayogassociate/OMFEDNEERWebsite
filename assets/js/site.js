@@ -43,7 +43,7 @@
     const slides = $$('.slide', sl), dotsBox = $('.slider-dots', sl), pb = $('[data-pause]', sl);
     let i = 0, timer = null, userPaused = reduced, hover = false;
     const dots = slides.map((s, n) => { const d = document.createElement('button'); d.type = 'button'; d.setAttribute('role', 'tab'); d.setAttribute('aria-label', `Slide ${n + 1} of ${slides.length}`); d.addEventListener('click', () => { go(n); restart(); }); dotsBox.append(d); return d; });
-    const go = n => { i = (n + slides.length) % slides.length; slides.forEach((s, k) => { s.classList.toggle('on', k === i); s.setAttribute('aria-hidden', String(k !== i)); $$('a', s).forEach(a => a.tabIndex = k === i ? 0 : -1); }); dots.forEach((d, k) => d.setAttribute('aria-selected', String(k === i))); };
+    const go = n => { i = (n + slides.length) % slides.length; slides.forEach((s, k) => { s.classList.toggle('on', k === i); s.setAttribute('aria-hidden', String(k !== i)); if (s.tagName === 'A') s.tabIndex = k === i ? 0 : -1; $$('a', s).forEach(a => a.tabIndex = k === i ? 0 : -1); }); dots.forEach((d, k) => d.setAttribute('aria-selected', String(k === i))); };
     const restart = () => { clearInterval(timer); timer = null; if (!(userPaused || hover || document.hidden)) timer = setInterval(() => go(i + 1), 5000); };
     const setPb = () => { pb.innerHTML = userPaused ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>'; pb.setAttribute('aria-label', userPaused ? 'Play slides' : 'Pause slides'); };
     pb.addEventListener('click', () => { userPaused = !userPaused; setPb(); restart(); });
