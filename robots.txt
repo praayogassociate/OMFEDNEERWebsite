@@ -1,0 +1,3 @@
+# Not indexed yet: waiting for OMFED's written OK and the final domain.
+User-agent: *
+Disallow: /
