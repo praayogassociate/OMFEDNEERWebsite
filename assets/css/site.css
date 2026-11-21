@@ -517,3 +517,28 @@ img{height:auto}
 @media (max-width:767px){.slide .pic-trio{height:52%;top:10px}.slide.light .txt{bottom:56px}.slide.light h2{font-size:22px}}
 .banner-grid>*{min-width:0}
 .slider{width:100%;align-self:start}
+
+/* floating Advertisement box (omfed.com style) + Advertisements section */
+.adpop{position:fixed;right:112px;bottom:16px;z-index:94;width:320px;background:#000;box-shadow:0 12px 36px rgba(0,0,0,.35);border-radius:6px;overflow:hidden}
+.adpop[hidden]{display:none}
+.adpop-h{display:flex;align-items:center;justify-content:space-between;background:var(--indigo);color:#fff;padding:7px 10px;font-size:14px;font-weight:600}
+.adpop-h button{background:none;border:0;color:#fff;font-size:22px;line-height:1;padding:0 2px}
+.adpop-v{position:relative;aspect-ratio:16/9;background:#000}
+.adpop-v video{width:100%;height:100%;object-fit:cover;cursor:pointer}
+.adpop-play{position:absolute;inset:0;margin:auto;width:54px;height:54px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--indigo);display:grid;place-items:center}
+.adpop-play[hidden]{display:none}
+.adpop-play svg{width:24px;height:24px;margin-left:3px}
+.adpop-f{display:flex;align-items:center;gap:8px;background:#0b1f45;color:#fff;padding:6px 8px;font-size:12.5px}
+.adpop-f button{background:none;border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:4px;width:30px;height:26px;display:grid;place-items:center;flex:none}
+.adpop-f button svg{width:18px;height:18px}
+.adpop-f button .w1,.adpop-f button .w2{display:none}
+.adpop-f button.on .w1,.adpop-f button.on .w2{display:inline}.adpop-f button.on .x{display:none}
+.adpop-t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--fo)}
+.adpop-f a{color:var(--drop);font-weight:600;flex:none}
+.ad-meta{margin-top:8px;font-size:15px}
+.ad-meta b{font-family:var(--fo);color:var(--deep)}
+@media (max-width:767px){
+  .adpop{right:auto;left:10px;bottom:10px;width:calc(100vw - 104px);max-width:300px}
+  .ads-row .col-6{width:100%;margin-bottom:18px}
+}
+body.ad-on .chat-open .bubble{display:none}

@@ -118,6 +118,23 @@
     lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
   }
 
+  // Floating "Advertisement" box (home page, as on omfed.com): our ad films, muted, one after another.
+  // Appears after 2.5 s; closing it keeps it closed for this visit; no autoplay for reduced-motion users.
+  const ad = $('#adpop');
+  if (ad) {
+    const ses = { get: k => { try { return sessionStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch { /* blocked */ } } };
+    const list = JSON.parse(ad.dataset.ads || '[]'), v = $('video', ad), t = $('.adpop-t', ad), play = $('[data-ad-play]', ad), snd = $('[data-ad-sound]', ad);
+    let k = 0;
+    const load = n => { k = (n + list.length) % list.length; v.src = list[k].src; v.poster = list[k].poster; t.textContent = list[k].t; };
+    const start = () => { play.hidden = true; const p = v.play(); if (p) p.catch(() => { play.hidden = false; }); };
+    v.addEventListener('ended', () => { load(k + 1); start(); });
+    play.addEventListener('click', () => { if (!v.src) load(0); start(); });
+    v.addEventListener('click', () => { if (v.paused) start(); else { v.pause(); play.hidden = false; } });
+    snd.addEventListener('click', () => { v.muted = !v.muted; snd.setAttribute('aria-pressed', String(!v.muted)); snd.setAttribute('aria-label', v.muted ? 'Turn sound on' : 'Turn sound off'); snd.classList.toggle('on', !v.muted); if (v.paused) start(); });
+    $('[data-ad-close]', ad).addEventListener('click', () => { v.pause(); ad.hidden = true; document.body.classList.remove('ad-on'); ses.set('neer-ad-closed', '1'); });
+    if (ses.get('neer-ad-closed') !== '1' && list.length) setTimeout(() => { ad.hidden = false; document.body.classList.add('ad-on'); load(0); if (!reduced) start(); else play.hidden = false; }, 2500);
+  }
+
   // Ask Balaram: fixed answers from the site's own facts, each ending with a WhatsApp hand-off (no AI, no tracking)
   const chat = $('[data-chat]'), body = $('[data-chat-body]');
   if (!chat || !body) return;
