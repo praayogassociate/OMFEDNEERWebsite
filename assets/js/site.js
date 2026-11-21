@@ -70,7 +70,7 @@
   // Product band tabs (Bottles / Bulk orders / Distributors)
   $$('[data-ptabs]').forEach(box => {
     const tabs = $$('[role="tab"]', box);
-    const sel = t => { tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; const p = document.getElementById(x.getAttribute('aria-controls')); if (p) p.hidden = !on; }); };
+    const sel = t => { tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; const p = document.getElementById(x.getAttribute('aria-controls')); if (p) { p.hidden = !on; if (on) $$('.reveal', p).forEach(r => r.classList.add('in')); } }); };
     tabs.forEach((t, k) => { t.addEventListener('click', () => sel(t)); t.addEventListener('keydown', e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { const n = tabs[(k + d + tabs.length) % tabs.length]; sel(n); n.focus(); } }); });
   });
 
