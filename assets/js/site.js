@@ -188,11 +188,12 @@
   const chat = $('[data-chat]'), body = $('[data-chat-body]');
   if (!chat || !body) return;
   const TOPICS = {
-    sizes: { label: 'Pack sizes', answer: '1 litre (12 bottles a box), 500 ml (24 a box) and 250 ml (48 a box).', wa: "Hello, I'd like to know about OMFED NEER pack sizes and prices." },
+    sizes: { label: 'Pack sizes', answer: '1 litre (12 bottles a box), 500 ml (24 a box) and 250 ml (30 a box).', wa: "Hello, I'd like to know about OMFED NEER pack sizes and prices." },
     buy: { label: 'Where to buy', answer: 'Tell us your district on WhatsApp and our team will tell you where to get OMFED NEER near you.', wa: 'Hello, where can I buy OMFED NEER? My district is: ' },
     dist: { label: 'Become a distributor', answer: 'Send your name, firm, district and phone. We never ask for payment before a signed agreement.', wa: 'Hello, I want to become an OMFED NEER distributor. Name, firm, district, phone: ' },
     bulk: { label: 'Bulk order', answer: 'For offices, schools, hospitals and events: tell us the organisation, district, pack size and quantity. Every supply has a GST invoice.', wa: 'Hello, bulk order enquiry for OMFED NEER. Organisation, district, pack size and quantity: ' },
     label: { label: "What's in it?", answer: 'Packaged drinking water with added mineral. The label says it is processed using reverse osmosis, UV treatment and ozonation.', wa: 'Hello, I have a question about OMFED NEER water: ' },
+    lic: { label: 'FSSAI licence', answer: 'FSSAI Lic. No. 12026004000052, held by Praayog Associate Private Limited, the manufacturer of OMFED NEER.', wa: 'Hello, I have a question about the OMFED NEER FSSAI licence: ' },
   };
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
   const end = () => { body.scrollTop = body.scrollHeight; };

@@ -324,7 +324,7 @@ textarea{min-height:96px;resize:vertical}
 .social{display:flex;gap:12px;justify-content:flex-end}
 .social a{width:44px;height:44px;border:1.5px solid #fff;border-radius:50%;display:grid;place-items:center}
 .social svg{width:20px;height:20px;fill:#fff}
-.social a:hover{background:#fff}.social a:hover svg{fill:var(--navy)}
+.social a.ln svg{fill:none;stroke:#fff;stroke-width:1.8}.social a.ln:hover svg{fill:none;stroke:var(--navy)}.social a:hover{background:#fff}.social a:hover svg{fill:var(--navy)}
 .fnote{font-size:14px;line-height:1.55;margin-top:22px;color:var(--ftext);text-align:right}
 .fbottom{display:flex;justify-content:space-between;gap:20px;border-top:1px solid rgba(255,255,255,.18);margin-top:40px;padding:22px 0 90px;font-size:14px}
 .fbottom ul{display:flex;flex-wrap:wrap;list-style:none;margin:0;padding:0}
