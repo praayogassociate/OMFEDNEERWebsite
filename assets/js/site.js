@@ -109,13 +109,62 @@
     $('[data-mail]', f)?.addEventListener('click', () => { if (valid()) location.href = `mailto:${MAIL}?subject=${encodeURIComponent(f.dataset.enquiry)}&body=${encodeURIComponent(compose())}`; });
   });
 
-  // Lightbox for galleries and product images
+  // Lightbox for galleries, product images and films
   const lb = $('dialog.lightbox');
   if (lb && typeof lb.showModal === 'function') {
-    const img = $('img', lb), cap = $('p', lb);
-    $$('[data-zoom]').forEach(b => b.addEventListener('click', () => { img.src = b.dataset.zoom; img.alt = b.dataset.cap || ''; cap.textContent = b.dataset.cap || ''; lb.showModal(); }));
+    const img = $('img', lb), vid = $('video', lb), cap = $('p', lb);
+    const show = (b, film) => {
+      img.hidden = film; vid.hidden = !film;
+      if (film) { vid.src = b.dataset.video; vid.setAttribute('aria-label', b.dataset.cap || ''); } else { img.src = b.dataset.zoom; img.alt = b.dataset.cap || ''; }
+      cap.textContent = b.dataset.cap || ''; lb.showModal(); if (film) vid.play().catch(() => {});
+    };
+    $$('[data-zoom]').forEach(b => b.addEventListener('click', () => show(b, false)));
+    $$('[data-video]').forEach(b => b.addEventListener('click', () => show(b, true)));
     $('button', lb).addEventListener('click', () => lb.close());
     lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+    lb.addEventListener('close', () => vid.pause());
+  }
+
+  // Product enquiry window (any [data-enq] opens it, with the product picked)
+  const eq = $('#enq');
+  if (eq && typeof eq.showModal === 'function') {
+    const openEq = (e, b) => { e.preventDefault(); if (b.dataset.enq) $('[name="product"]', eq).value = b.dataset.enq; if (ov?.classList.contains('open')) ovSet(false); eq.showModal(); $('[name="name"]', eq).focus(); };
+    $$('[data-enq]').forEach(b => b.addEventListener('click', e => openEq(e, b)));
+    $('[data-enq-close]', eq).addEventListener('click', () => eq.close());
+    eq.addEventListener('click', e => { if (e.target === eq) eq.close(); });
+  }
+
+  // Listen: reads the product facts aloud with the device's own voice (nothing is sent anywhere)
+  $$('[data-say]').forEach(b => {
+    if (!('speechSynthesis' in window)) { b.hidden = true; return; }
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => {
+      const was = b.getAttribute('aria-pressed') === 'true';
+      speechSynthesis.cancel(); $$('[data-say]').forEach(x => x.setAttribute('aria-pressed', 'false'));
+      if (was) return;
+      const u = new SpeechSynthesisUtterance(b.dataset.say); u.lang = 'en-IN'; u.rate = .95;
+      u.onend = u.onerror = () => b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-pressed', 'true'); speechSynthesis.speak(u);
+    });
+  });
+
+  // Product page: thumbnails swap the main picture
+  $$('.pd').forEach(pd => {
+    const main = $('.pd-main', pd), src = $('source', main), im = $('img', main);
+    $$('[data-shot]', pd).forEach(t => t.addEventListener('click', () => {
+      src.srcset = t.dataset.shot + '.webp'; im.src = t.dataset.shot + '.jpg'; im.alt = t.dataset.alt; main.dataset.zoom = t.dataset.shot + '.jpg'; main.dataset.cap = t.dataset.alt;
+      $$('[data-shot]', pd).forEach(x => x.toggleAttribute('aria-current', x === t)); t.setAttribute('aria-current', 'true');
+    }));
+  });
+
+  // Contact page: ?topic=feedback preselects the topic
+  if (new URLSearchParams(location.search).get('topic') === 'feedback') { const f = $('#g-topic'); if (f) f.value = 'Feedback or a concern'; }
+
+  // Opening animation on the home page: once per visit, about a second, never for reduced motion
+  const ld = $('#loader');
+  if (ld) {
+    let seen = null; try { seen = sessionStorage.getItem('neer-loaded'); sessionStorage.setItem('neer-loaded', '1'); } catch { /* blocked */ }
+    if (seen || reduced) ld.remove(); else { ld.classList.add('run'); setTimeout(() => ld.classList.add('done'), 1250); setTimeout(() => ld.remove(), 1800); }
   }
 
   // Floating "Advertisement" box (home page, as on omfed.com): our ad films, muted, one after another.
